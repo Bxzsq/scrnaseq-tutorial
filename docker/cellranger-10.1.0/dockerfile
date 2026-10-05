@@ -1,0 +1,14 @@
+FROM ubuntu:22.04
+
+LABEL software="Cell Ranger"
+LABEL version="10.1.0"
+
+ENV CELLRANGER_HOME=/opt/cellranger-10.1.0
+ENV PATH=${CELLRANGER_HOME}:${PATH}
+
+COPY . ${CELLRANGER_HOME}
+
+WORKDIR /data
+
+RUN ${CELLRANGER_HOME}/cellranger --version
+

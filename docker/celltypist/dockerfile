@@ -1,0 +1,13 @@
+
+FROM docker.m.daocloud.io/library/python:3.10-slim
+
+WORKDIR /data
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir celltypist scanpy anndata
+
+
+RUN python -c "from celltypist import models; models.download_models(model='Adult_Human_PrefrontalCortex.pkl')"
+
+
+RUN rm -rf /root/.cache/pip

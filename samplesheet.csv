@@ -1,0 +1,7 @@
+﻿library,condition,fastq_dir
+AD1-2,AD,/home/liaojunyan/snRNA/gse138852/fastq/AD1-2
+AD3-4,AD,/home/liaojunyan/snRNA/gse138852/fastq/AD3-4
+AD5-6,AD,/home/liaojunyan/snRNA/gse138852/fastq/AD5-6
+CT1-2,Control,/home/liaojunyan/snRNA/gse138852/fastq/CT1-2
+CT3-4,Control,/home/liaojunyan/snRNA/gse138852/fastq/CT3-4
+CT5-6,Control,/home/liaojunyan/snRNA/gse138852/fastq/CT5-6

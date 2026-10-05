@@ -1,0 +1,38 @@
+# Nextflow
+work/
+.nextflow/
+.nextflow.log*
+
+# Results
+results/
+
+# R temporary files
+.Rhistory
+.RData
+.Rproj.user/
+Rplots.pdf
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large/local data
+*.fastq
+*.fastq.gz
+*.bam
+*.bai
+*.h5
+*.h5ad
+*.rds
+
+# Cell Ranger local installation/build context
+docker/cellranger-10.1.0/*
+!docker/cellranger-10.1.0/dockerfile
+
+# CellTypist local build artifacts
+docker/celltypist/*
+!docker/celltypist/dockerfile
