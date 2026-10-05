@@ -1,7 +1,7 @@
-# 从零开始：用 Nextflow 搭建单细胞 RNA-seq 分析流程
+# Nextflow 搭建单细胞 RNA-seq 分析流程
 
 > 面向人群：有自己的 Linux 服务器，平时在 RStudio 里用 Seurat 做单细胞分析，但没接触过 Nextflow。
-> 目标：跑通一条 `FASTQ → 表达矩阵 → Seurat 聚类 → rds` 的完整流程，下游分析就是你熟悉的 R。
+> 目标：跑通一条 `FASTQ → 表达矩阵 → Seurat 聚类 → rds` 的完整流程。
 
 ## 你将做出什么
 
@@ -13,9 +13,9 @@ samplesheet.csv
     └─> MULTIQC   汇总所有质控日志为一份网页报告
 ```
 
-核心思想：**分析逻辑用你擅长的 R 写（`bin/seurat_analyse.R`），Nextflow 只负责并行调度、环境和容错。**
+核心思想：**分析逻辑用 R 写（`bin/seurat_analyse.R`），Nextflow 只负责并行调度、环境和容错。**
 
-## 第 0 步：准备运行环境（Linux 服务器，10 分钟）
+## 第 0 步：准备运行环境
 
 ```bash
 # 1. Nextflow 需要 Java 17+，先检查
@@ -39,7 +39,7 @@ nextflow -version   # 验证
 
 > 如果服务器上 RStudio 那套 R 环境已装好 Seurat，也可以不用任何容器——但建议至少用 conda 保持可重复性。
 
-## 第 1 步：10 分钟理解两个核心概念
+## 第 1 步：两个核心概念
 
 Nextflow 只有两块积木：
 
@@ -100,7 +100,7 @@ STAR --runMode genomeGenerate \
 
 **barcode 白名单**：10x 3' v3 / v3.1 对应 `3M-february-2018.txt.gz`（给 STARsolo 用前先解压成 `.txt`）；`737K-august-2016.txt` 是旧版 v2，不适合这个 pbmc_1k_v3 数据集。另一个容易漏掉的参数是 **UMI 长度**：v3 / v3.1 应为 `12`，脚手架里已经在 STARsolo 模块中加好了 `--soloUMIlen ${params.solo_umi_len}`。把 `nextflow.config` 里的 `star_index`、`whitelist` 改成你的实际路径即可。
 
-## 第 4 步：运行！
+## 第 4 步：运行
 
 ```bash
 # 按你服务器的条件选一个 profile
@@ -120,7 +120,7 @@ nextflow run main.nf -profile singularity \
 
 ## 第 5 步：在 RStudio 里接着分析
 
-流程跑到这里交付的是一个**已经质控、聚类好的 Seurat 对象**，正好接进你日常的交互式分析：
+流程跑到这里交付的是一个**已经质控、聚类好的 Seurat 对象**，后续可以在RStudio上进行个性化分析：
 
 ```r
 seu <- readRDS("results/seurat/merged.rds")
@@ -133,7 +133,7 @@ VlnPlot(seu, features = c("nFeature_RNA", "percent.mt"))
 
 如果你用的是 RStudio Server，流程跑在后台，浏览器里随时读结果，互不影响。
 
-## 第 6 步：排错（迟早要用）
+## 第 6 步：排错
 
 - 每个任务在 `work/` 下有独立目录，里面有 `.command.sh`（实际执行的脚本）、`.command.err`（报错信息）、`.command.out`
 - `nextflow log` 查看历史运行；终端里 `[tag 名]` 对应模块里的 `tag "$sample"`
